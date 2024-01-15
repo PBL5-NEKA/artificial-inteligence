@@ -32,7 +32,7 @@ def apply_haar_cascade_on_image(image, face_cascade):
         # cv2.rectangle(img, (x, y), (x+w, y+h), (0, 0, 255), 2)
         detected_face = image[y:y + h, x:x + w]
     else:
-        detected_face = None
+        detected_face = image
 
     return detected_face
 
@@ -46,10 +46,10 @@ def apply_haar_cascade_on_images(images, face_cascade):
         detected_face = apply_haar_cascade_on_image(image, face_cascade)
 
         if detected_face is not None:
-            cropped_images[idx] = np.array(cv2.resize(cv2.cvtColor(detected_face, cv2.COLOR_RGB2BGR), NEW_IMAGE_SIZE))
+            cropped_images[idx] = np.array(cv2.resize(image, NEW_IMAGE_SIZE))
         else:
             miscropped_images += 1
-            cropped_images[idx] = np.array(cv2.resize(cv2.cvtColor(image, cv2.COLOR_RGB2BGR), NEW_IMAGE_SIZE))
+            cropped_images[idx] = np.array(cv2.resize(image, NEW_IMAGE_SIZE))
 
     return miscropped_images, cropped_images
 
