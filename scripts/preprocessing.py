@@ -20,6 +20,8 @@ def load_face_cascade(path):
 
 
 def apply_haar_cascade_on_image(image, face_cascade):
+    miscropped = False
+
     # Convert the image to grayscale
     gray = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY).astype(np.uint8)
 
@@ -32,24 +34,24 @@ def apply_haar_cascade_on_image(image, face_cascade):
         # cv2.rectangle(img, (x, y), (x+w, y+h), (0, 0, 255), 2)
         detected_face = image[y:y + h, x:x + w]
     else:
+        miscropped = True
         detected_face = image
 
-    return detected_face
+    return detected_face, miscropped
 
 
 def apply_haar_cascade_on_images(images, face_cascade):
-    cropped_images = np.random.random((images.shape[0], NEW_IMAGE_SIZE[0], NEW_IMAGE_SIZE[1], 3))
+    cropped_images = np.random.random((images.shape[0], CROPPED_IMAGE_SIZE[0], CROPPED_IMAGE_SIZE[1], 3))
+
     miscropped_images = 0
 
     for idx, image in enumerate(images):
+        detected_face, miscropped = apply_haar_cascade_on_image(image, face_cascade)
 
-        detected_face = apply_haar_cascade_on_image(image, face_cascade)
+        cropped_images[idx] = np.array(cv2.resize(detected_face.astype(np.uint8), CROPPED_IMAGE_SIZE))
 
-        if detected_face is not None:
-            cropped_images[idx] = np.array(cv2.resize(image, NEW_IMAGE_SIZE))
-        else:
+        if miscropped:
             miscropped_images += 1
-            cropped_images[idx] = np.array(cv2.resize(image, NEW_IMAGE_SIZE))
 
     return miscropped_images, cropped_images
 
