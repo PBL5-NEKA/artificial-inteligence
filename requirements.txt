@@ -23,6 +23,7 @@ matplotlib
 Pillow
 scikit-learn
 opencv-python
+scikeras
 
 ################################################################
 # TensorFlow v.2.1 and above include both CPU and GPU versions.
