@@ -7,7 +7,7 @@ from keras import backend as K
 from keras.preprocessing.image import img_to_array
 
 #---------------Direcciones de modelos---------------
-ModeloCNN2 = 'models/01FinalDatasetModel.h5'
+ModeloCNN2 = 'models/01FinalModel.h5'
 ModelHaarCascade = 'models/haarcascade_frontalface_alt2.xml'
 #---------------Leemos la red neuronal---------------
 CNN2 = tf.keras.models.load_model(ModeloCNN2)
