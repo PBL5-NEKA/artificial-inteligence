@@ -2,7 +2,7 @@ import unittest
 import cv2
 import os
 import numpy as np
-from preprocessing import load_face_cascade, apply_haar_cascade_on_image, apply_haar_cascade_on_images
+from scripts.preprocessing import load_face_cascade, apply_haar_cascade_on_image, apply_haar_cascade_on_images
 
 CROPPED_IMAGE_SIZE = (128, 128)
 

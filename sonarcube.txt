@@ -1,1 +1,0 @@
-sonar-scanner.bat -D"sonar.projectKey=artificial-intelligence" -D"sonar.sources=./scripts/preprocessing.py" -D"sonar.tests=./scripts/preprocessing-test.py" -D"sonar.host.url=http://nekai-company.duckdns.org:9000" -D"sonar.token=sqp_3fe9d93d98b3d608653180c21116a5531bd21dc7"
