@@ -11,15 +11,27 @@ class TestPreprocessing(unittest.TestCase):
 
     def setUp(self):
         # Set up the face cascade for testing
-        self.face_cascade_path = '../models/haarcascade_frontalface_alt2.xml'
-        self.face_cascade = load_face_cascade(self.face_cascade_path)
+        self.face_cascade_path = './models/haarcascade_frontalface_alt2.xml'
+        self.abs_cascade_path=os.path.abspath(self.face_cascade_path)
+        self.face_cascade = load_face_cascade(self.abs_cascade_path)
+        
+        self.has_face = 'scripts/img-test/has_face.jpg'
+        self.abs_has_face=os.path.abspath(self.has_face)
+        
+        self.no_face = 'scripts/img-test/no_face.jpg'
+        self.abs_no_face=os.path.abspath(self.no_face)
+        
+        self.images_with_face = 'scripts/img-test/images_with_face'
+        self.abs_images_with_face=os.path.abspath(self.images_with_face)
+        
+        self.images_with_no_face = 'scripts/img-test/images_with_no_face'
+        self.abs_images_with_no_face=os.path.abspath(self.images_with_no_face)
 
     # --- load_face_cascade test ---
 
     def test_load_face_cascade_success(self):
         # Provide the correct path to your Haar Cascade XML file
-        cascade_path = '../models/haarcascade_frontalface_alt2.xml'
-        face_cascade = load_face_cascade(cascade_path)
+        face_cascade = load_face_cascade(self.abs_cascade_path)
 
         self.assertIsInstance(face_cascade, cv2.CascadeClassifier)
         self.assertFalse(face_cascade.empty())
@@ -27,8 +39,7 @@ class TestPreprocessing(unittest.TestCase):
 
     def test_load_face_cascade_failure(self):
         # Provide an incorrect path to simulate a failure
-        cascade_path = '../models/haarcascade_frontalface_at2.xml'
-        face_cascade = load_face_cascade(cascade_path)
+        face_cascade = load_face_cascade('.')
 
         self.assertIsInstance(face_cascade, cv2.CascadeClassifier)
         self.assertTrue(face_cascade.empty())
@@ -38,7 +49,7 @@ class TestPreprocessing(unittest.TestCase):
 
     def test_apply_haar_cascade_on_image_with_face(self):
         # Load an image with a face for testing
-        image_with_face = cv2.imread('img-test/has_face.jpg')
+        image_with_face = cv2.imread(self.abs_has_face)
         detected_face, miscropped = apply_haar_cascade_on_image(image_with_face, self.face_cascade)
 
         self.assertIsInstance(detected_face, np.ndarray)
@@ -46,7 +57,7 @@ class TestPreprocessing(unittest.TestCase):
 
     def test_apply_haar_cascade_on_image_without_face(self):
         # Load an image without a face for testing
-        image_without_face = cv2.imread('img-test/no_face.jpg')
+        image_without_face = cv2.imread(self.abs_no_face)
         detected_face, miscropped = apply_haar_cascade_on_image(image_without_face, self.face_cascade)
 
         self.assertIsInstance(detected_face, np.ndarray)
@@ -62,8 +73,7 @@ class TestPreprocessing(unittest.TestCase):
 
     def test_apply_haar_cascade_on_images(self):
         # Specify the directory containing images for testing
-        test_images_directory = 'img-test/images_with_face'
-        images = self.load_images_from_directory(test_images_directory)
+        images = self.load_images_from_directory(self.abs_images_with_face)
 
         miscropped_images, cropped_images = apply_haar_cascade_on_images(images, self.face_cascade)
 
@@ -73,8 +83,7 @@ class TestPreprocessing(unittest.TestCase):
 
     def test_apply_haar_cascade_on_images_with_miscropped(self):
         # Specify the directory containing images for testing
-        test_images_directory = 'img-test/images_with_no_face'
-        images = self.load_images_from_directory(test_images_directory)
+        images = self.load_images_from_directory(self.abs_images_with_no_face)
 
         miscropped_images, cropped_images = apply_haar_cascade_on_images(images, self.face_cascade)
 
